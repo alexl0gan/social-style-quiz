@@ -1,0 +1,98 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@if (!Model.Quiz.Completed)
+{
+    <h1>
+        Questions
+    </h1>
+    <form method="post" asp-controller="Quiz" asp-action="Submit">
+        @for (var i = 0; i < Model.Quiz.Questions.Count(); i++)
+        {
+            <h4>
+                @{var questionNumber = i + 1;}
+                Question @questionNumber
+            </h4>
+            <row>
+                <fieldset>
+                    <div>
+                        <div class="col-md-9">
+                            <label asp-for="@Model.Quiz.Questions[i].Selection">@Model.Quiz.Questions[i].BQuestionString</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input asp-for="@Model.Quiz.Questions[i].Selection" type="radio" value="0">
+                        </div>
+
+                        <div class="col-md-9">
+                            <label asp-for="@Model.Quiz.Questions[i].Selection">@Model.Quiz.Questions[i].AQuestionString</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input asp-for="@Model.Quiz.Questions[i].Selection" type="radio" value="1">
+                        </div>
+                    </div>
+                </fieldset>
+            </row>
+            <br/>
+        }
+
+        <div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+
+    </form>
+}
+else
+{
+    <div>
+        <h1>
+            Results
+        </h1>
+        <table  style="width:32%">
+            <tr>
+                <th>
+                    <h4>A</h4>
+                </th>
+                    
+                <th>
+                    <h4>T</h4>
+                </th>
+            
+                <th>
+                    <h4>C</h4>
+                </th>
+
+                <th>
+                    <h4>E</h4>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <h4>@Model.Quiz.ACount</h4>
+                </td>
+
+                <td>
+                    <h4>@Model.Quiz.TCount</h4>
+                </td>
+
+                <td>
+                    <h4>@Model.Quiz.CCount</h4>
+                </td>
+
+                <td>
+                    <h4>@Model.Quiz.ECount</h4>
+                </td>
+            </tr>
+        </table>
+ 
+        <h3>You are @Model.Quiz.QuizAnswer.ToString()</h3>
+
+        <br/>
+
+        <form method="post" asp-controller="Quiz" asp-action="Reset">
+            <button type="submit" class="btn btn-danger">Reset</button>
+        </form>
+    </div>
+}
